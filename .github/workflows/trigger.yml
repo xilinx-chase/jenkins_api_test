@@ -1,0 +1,19 @@
+name: PR Comment Trigger
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  run-on-pr-comment:
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/run') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger CI
+        run: |
+          echo "Comment by: ${{ github.actor }}"
+          echo "Comment: ${{ github.event.comment.body }}"
+          echo "Triggered by PR comment: ${{ github.event.comment.body }}"
+          COMMENT="${{ github.event.comment.body }}"
+          echo "Found commit hashes:"
+          echo "$COMMENT" | grep -oE '\b[0-9a-f]{40}\b'
