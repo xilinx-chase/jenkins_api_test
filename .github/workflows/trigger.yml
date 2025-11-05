@@ -17,12 +17,4 @@ jobs:
           echo
 
           echo "Parsed repo and commit hash pairs:"
-          echo "$COMMENT" | while IFS=":" read -r repo commit; do
-            # Skip empty or invalid lines
-            if [[ -n "$repo" && "$commit" =~ ^[0-9a-f]{40}$ ]]; then
-              repo=$(echo $repo | xargs)       # Trim whitespace
-              commit=$(echo $commit | xargs)   # Trim whitespace
-              echo "Repo: $repo, Commit: $commit"
-              # 后续可以在这里执行 clone/checkout 或其他操作
-            fi
-          done
+          echo "$COMMENT" | grep -oE '^[A-Za-z0-9_-]+:\s+[0-9a-f]{40}' || echo "No matches found"
