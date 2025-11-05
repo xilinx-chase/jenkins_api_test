@@ -68,6 +68,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     request = {
         "job_name": args.job,
-        "parameters": {"MODEL_PATH": args.model_path} if args.model_path else None
+        "parameters": {"MODEL_PATH": args.model_path, "EXECUTION_MODE": "analyze"}
     }
     test_build_trigger(request)
