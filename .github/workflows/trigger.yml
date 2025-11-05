@@ -11,9 +11,18 @@ jobs:
     steps:
       - name: Trigger CI
         run: |
-          echo "Comment by: ${{ github.actor }}"
-          echo "Comment: ${{ github.event.comment.body }}"
-          echo "Triggered by PR comment: ${{ github.event.comment.body }}"
           COMMENT="${{ github.event.comment.body }}"
-          echo "Found commit hashes:"
-          echo "$COMMENT" | grep -oE '\b[0-9a-f]{40}\b'
+          echo "Raw PR Comment:"
+          echo "$COMMENT"
+          echo
+
+          echo "Parsed repo and commit hash pairs:"
+          echo "$COMMENT" | while IFS=":" read -r repo commit; do
+            # Skip empty or invalid lines
+            if [[ -n "$repo" && "$commit" =~ ^[0-9a-f]{40}$ ]]; then
+              repo=$(echo $repo | xargs)       # Trim whitespace
+              commit=$(echo $commit | xargs)   # Trim whitespace
+              echo "Repo: $repo, Commit: $commit"
+              # 后续可以在这里执行 clone/checkout 或其他操作
+            fi
+          done
