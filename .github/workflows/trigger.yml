@@ -1,6 +1,7 @@
 name: PR Comment Trigger
 
 on:
+  workflow_dispatch:
   issue_comment:
     types: [created]
 
@@ -28,12 +29,14 @@ jobs:
         with:
           python-version: '3.13'
 
-      - name: Install dependencies
+      - name: 📦 Install Ruff
         run: |
-          pip install python-jenkins
+          python -m pip install --upgrade pip
+          pip install ruff
 
-      # 4. 运行你仓库中的 Python 脚本
-      - name: Run Python script
+      - name: 🔍 Run Ruff lint check
         run: |
-          ls -lR
-          python utils/jenkins_api.py --job "Model-Slicing-CI" --model_path "/wrk/xsjhdscratch_staff3/yuxiz/procyon2_quantized_onnx/detr_a8w8_p.onnx"
+          echo "=============================="
+          echo " Running Ruff lint check... 🧹"
+          echo "=============================="
+          ruff check . --output-format=github
