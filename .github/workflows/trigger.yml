@@ -1,6 +1,7 @@
 name: PR Comment Trigger
 
 on:
+  workflow_dispatch:
   issue_comment:
     types: [created]
 
